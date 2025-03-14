@@ -12,19 +12,15 @@
             <template #title>
               <span>Navigator One</span>
             </template>
-            <el-menu-item-group title="Group One">
               <el-menu-item index="1-1">item one</el-menu-item>
               <el-menu-item index="1-2">item two</el-menu-item>
-            </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
               <span>Navigator Two</span>
             </template>
-            <el-menu-item-group title="Group Two">
               <el-menu-item index="2-1">item one</el-menu-item>
               <el-menu-item index="2-2">item two</el-menu-item>
-            </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
       </el-aside>
