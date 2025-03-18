@@ -1,12 +1,12 @@
 <template>
   <div id="bg">
     <div id="login_box">
-    <h2>登录</h2>
+    <h2>企业门户网站管理系统</h2>
     <div id="input_box">
-      <input type="text" placeholder="请输入用户名" v-model="userName">
+      <input type="text" placeholder="请输入用户名" v-model.trim="userName">
     </div>
     <div class="input_box">
-      <input type="password" placeholder="请输入密码" v-model="password">
+      <input type="password" placeholder="请输入密码" v-model.trim="password">
     </div>
     <button @click="login()">登录</button><br>
   </div>
@@ -14,11 +14,18 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 const userName = ref('');
 const password = ref('');
+const router = useRouter();
 const login = ()=>{
-    console.log(userName.value,password.value);
+    if(userName.value===''||password.value===''){
+        ElMessage.error('请输入正确的账号密码');
+        return;
+    } 
+    localStorage.setItem('token','dsafaewf');
+    router.push("/index");
 }
 </script>
 
@@ -32,7 +39,7 @@ const login = ()=>{
 }
 
 #login_box {
-    width: 20%;
+    width: 28%;
     height: 400px;
     background-color: #00000060;
     margin: auto;
@@ -45,6 +52,7 @@ const login = ()=>{
 h2 {
     color: #ffffff90;
     margin-top: 5%;
+    margin-bottom: 20%;
 }
 
 #input-box {
