@@ -1,9 +1,7 @@
 <template>
 <el-aside width="auto" class="asider">
     <el-menu
-        :default-active="router.fullPath"
-        @open="handleOpen"
-        @close="handleClose"
+        :default-active="route.fullPath"
         :collapse="stateStore.isCollapsed"
         :collapse-transition="false"
         :router="true"
@@ -52,14 +50,8 @@
 <script setup>
 import useStateStore from "@/stores/useStateStore"
 import { useRoute } from "vue-router";
-const router = useRoute();
+const route = useRoute();
 const stateStore = useStateStore();
-const handleOpen = (key, keyPath) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key, keyPath) => {
-  console.log(key, keyPath)
-}
 </script>
 
 <style lang="scss" scoped>

@@ -10,7 +10,7 @@
   </template>
 
 <script setup>
-import {RouterLink,RouterView} from 'vue-router';
+import {RouterView} from 'vue-router';
 import TheHeader from '@/components/mainbox/TheHeader.vue';
 import TheSideMenu from '@/components/mainbox/TheSideMenu.vue'
 </script>

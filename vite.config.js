@@ -7,20 +7,20 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueDevTools from 'vite-plugin-vue-devtools'
-const pathSrc = path.resolve(__dirname, 'src')
+const pathSrc = path.resolve(__dirname, 'src');//src文件夹路径
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@': pathSrc,
+      '@': pathSrc,//配置src别名路径
     },
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@/*": ["src/*"]
+        "@/*": ["src/*"]//别名路径解析
       }
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"]//不编译node_modules
   },
   plugins: [
     Vue(),
@@ -64,4 +64,12 @@ export default defineConfig({
       autoInstall: true,
     }),
   ],
+  server:{//配置代理服务器
+    proxy:{
+      '/adminapi':{
+        target:'http://localhost:3000/',
+        changeOrigin:true,
+      }
+    }
+  }
 })

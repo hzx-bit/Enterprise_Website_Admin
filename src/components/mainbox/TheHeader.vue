@@ -5,7 +5,7 @@
             <span style="margin-left: 5px;">企业门户管理系统</span>
         </div>
         <div class="right">
-            <span style="margin-right: 5px;">欢迎 admin 回来</span>
+            <span style="margin-right: 5px;">欢迎 {{ userInfoStore.userInfo.username }} 回来</span>
             <el-dropdown>
                 <el-icon :size="30" color="white"><i-ep-User /></el-icon>
                 <template #dropdown>
@@ -22,8 +22,10 @@
 <script setup>
 import useStateStore from '@/stores/useStateStore'
 import { useRouter } from 'vue-router';
+import useUserInfoStore from '@/stores/useUserInfoStore';
 const router = useRouter();
 const stateStore = useStateStore();
+const userInfoStore = useUserInfoStore();
 const handleCollapsed = ()=>{
     stateStore.changeCollapsed();
 }
@@ -31,7 +33,7 @@ const handleCenter = ()=>{
     router.push('/center');
 }
 const handleLogout = ()=>{
-    localStorage.removeItem('token');
+    userInfoStore.clearUserInfo();
     router.push('/login');
 }
 </script>

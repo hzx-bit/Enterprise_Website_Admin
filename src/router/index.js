@@ -10,6 +10,7 @@ import UserList from '@/views/user-manage/UserList.vue'
 import NotFound from '@/views/notfound/NotFound.vue'
 import NewsAdd from '@/views/news-manage/NewsAdd.vue'
 import NewsList from '@/views/news-manage/NewsList.vue'
+import useUserInfoStore from '@/stores/useUserInfoStore'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -80,7 +81,8 @@ const router = createRouter({
 
 
 router.beforeEach((to,from,next)=>{
-    if(!localStorage.getItem("token")&&to.path!='/login'){
+    const userInfoStore = useUserInfoStore();
+    if(userInfoStore.token.length===0&&to.path!='/login'){
       next({
         path:'/login'
       })

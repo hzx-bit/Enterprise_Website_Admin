@@ -3,7 +3,7 @@
     <div id="login_box">
     <h2>企业门户网站管理系统</h2>
     <div id="input_box">
-      <input type="text" placeholder="请输入用户名" v-model.trim="userName">
+      <input type="text" placeholder="请输入用户名" v-model.trim="username">
     </div>
     <div class="input_box">
       <input type="password" placeholder="请输入密码" v-model.trim="password">
@@ -16,16 +16,32 @@
 <script setup>
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
-const userName = ref('');
+import useUserInfoStore from '../stores/useUserInfoStore'
+import axios from 'axios'
+const username = ref('');
 const password = ref('');
 const router = useRouter();
-const login = ()=>{
-    if(userName.value===''||password.value===''){
+const userInfoStore = useUserInfoStore();
+const login = async()=>{
+    if(username.value===''||password.value===''){
         ElMessage.error('请输入正确的账号密码');
         return;
     } 
-    localStorage.setItem('token','dsafaewf');
-    router.push("/index");
+    const res = await axios.post('/adminapi/user/login',{
+        username:username.value,
+        password:password.value
+    });
+    if(res.data.ActionType==='ok'){
+        userInfoStore.changeUserInfo(res.data.data);
+        router.push("/index");
+    }
+    else{
+        ElMessage({
+            message:res.data.message,
+            type:"error"
+        })
+    }
+    
 }
 </script>
 
@@ -43,7 +59,7 @@ const login = ()=>{
     height: 400px;
     background-color: #00000060;
     margin: auto;
-    margin-top: 10%;
+    margin-top: 5%;
     text-align: center;
     border-radius: 10px;
     padding: 50px 50px;
