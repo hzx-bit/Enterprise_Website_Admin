@@ -30,8 +30,6 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -48,5 +46,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     TheHeader: typeof import('./../components/mainbox/TheHeader.vue')['default']
     TheSideMenu: typeof import('./../components/mainbox/TheSideMenu.vue')['default']
+    Upload: typeof import('./../components/upload/Upload.vue')['default']
   }
 }
