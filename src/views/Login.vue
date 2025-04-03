@@ -17,6 +17,7 @@
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 import useUserInfoStore from '../stores/useUserInfoStore'
+import useStateStore from '../stores/useStateStore'
 import axios from 'axios'
 const username = ref('');
 const password = ref('');
@@ -32,6 +33,8 @@ const login = async()=>{
         password:password.value
     });
     if(res.data.ActionType==='ok'){
+        const stateStore = useStateStore();
+        stateStore.changeRouter(false);
         userInfoStore.changeUserInfo(res.data.data);
         router.push("/index");
     }
