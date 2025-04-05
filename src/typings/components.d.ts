@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Editor: typeof import('./../components/editor/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -17,6 +18,7 @@ declare module 'vue' {
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
@@ -36,6 +38,7 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
@@ -46,6 +49,7 @@ declare module 'vue' {
     IEpMessageBox: typeof import('~icons/ep/message-box')['default']
     IEpPlus: typeof import('~icons/ep/plus')['default']
     IEpReading: typeof import('~icons/ep/reading')['default']
+    IEpStarFilled: typeof import('~icons/ep/star-filled')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
     IEpUserFilled: typeof import('~icons/ep/user-filled')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -6,6 +6,8 @@ import UserAdd from '@/views/user-manage/UserAdd.vue'
 import UserList from '@/views/user-manage/UserList.vue'
 import NewsAdd from '@/views/news-manage/NewsAdd.vue'
 import NewsList from '@/views/news-manage/NewsList.vue'
+import NewsEdit from '@/views/news-manage/NewsEdit.vue'
+import ProductEdit from '@/views/product-manage/ProductEdit.vue'
 const routes = [
     {
         path:'/center',
@@ -40,9 +42,19 @@ const routes = [
         component: ProductList
     },
     {
+        path:'/product-manage/editproduct/:id',
+        name:'editproduct',
+        component: ProductEdit
+    },
+    {
         path:'/news-manage/newsadd',
         name:'newsadd',
         component: NewsAdd
+    },
+    {
+        path:'/news-manage/editnews/:id',
+        name:'editnews',
+        component: NewsEdit
     },
     {
         path:'/news-manage/newslist',
