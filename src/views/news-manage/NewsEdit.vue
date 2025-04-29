@@ -1,6 +1,9 @@
 <template>
     <div>
-        <el-page-header icon="" title="新闻管理" content="创建新闻"></el-page-header>
+        <el-page-header
+        @back="handleBack()" 
+        title="新闻管理" 
+        content="编辑新闻"></el-page-header>
         <el-card>
             <el-form
                 ref="newsFormRef"
@@ -13,7 +16,7 @@
                     <el-input v-model="newsForm.title" />
                 </el-form-item>
                 <el-form-item label="内容" prop="content">
-                    <Editor @editNews="editNews"></Editor>
+                    <Editor v-if="newsForm.content" @editNews="editNews" :content="newsForm.content"></Editor>
                 </el-form-item>
                 <el-form-item label="类别" prop="category">
                     <el-select
@@ -40,7 +43,7 @@
                         @click="submitForm()"
                         type="primary"
                         style="margin: auto;">
-                        添加新闻</el-button>
+                        更新新闻</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -48,20 +51,21 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useRoute,useRouter} from "vue-router";
 import Editor from '@/components/editor/Editor.vue'
-import upload from '@/util/upload';
 import Upload from '@/components/upload/Upload.vue'
-import { useRouter } from 'vue-router';
+import upload from '@/util/upload';
+import axios from "axios";
+import { ElMessage } from "element-plus";
+const route = useRoute();
+onMounted(async()=>{
+    const res =await axios.get(`/adminapi/news/list/${route.params.id}`);
+    newsForm.value = res.data.data[0];
+})
 const router = useRouter();
 const newsFormRef = ref(null);
-const newsForm = reactive({
-    title:"",
-    content:"",
-    category:null,
-    cover:"",
-    file:null,
-    isPublish:0
-});
+const newsForm = ref({});
 const newsFormRules = reactive({
     title:[
         { required: true, message: '请输入标题', trigger: 'blur' },
@@ -90,15 +94,19 @@ const categoryOptions = [
     label: '通知公告',
   },
 ]
+
+const handleBack = ()=>{
+    router.back();
+}
 const submitForm = async()=>{
     newsFormRef.value.validate(async(value)=>{
         if(value){
             try {
-                const res = await upload('/adminapi/news/add',newsForm);
-                if(res.data.ActionType=='ok'){
-                    ElMessage.success('添加成功！');
+                const res = await upload(`/adminapi/news/list`,newsForm.value);
+                if(res.data.ActionType==='ok'){
+                    ElMessage.success('更新成功！');
+                    router.back();
                 }
-                router.push('/news-manage/newslist')
             } catch (error) {
                 ElMessage.error(error.message);
             }
@@ -106,13 +114,14 @@ const submitForm = async()=>{
     })
 }
 const editNews = (value)=>{
-    newsForm.content = value;
+    newsForm.value.content = value;
 }
 
 const handleAvatarChange= (file) => {
-  newsForm.cover = URL.createObjectURL(file)
-  newsForm.file = file
+  newsForm.value.cover = URL.createObjectURL(file)
+  newsForm.value.file = file
 }
+
 </script>
 
 <style scoped>

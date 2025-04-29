@@ -13,6 +13,7 @@ axios.interceptors.request.use(config => {
 }, e => Promise.reject(e))
 
 // axios响应式拦截器
+const router = useRouter();
 axios.interceptors.response.use(response => {
     const userInfoStore = useUserInfoStore();
     const {authorization} = response.headers;
@@ -20,7 +21,6 @@ axios.interceptors.response.use(response => {
     return response;
 }, e => {
     const userInfoStore = useUserInfoStore();
-    const router = useRouter();
     ElMessage({
         type: 'warning',
         message: e.response.data.message

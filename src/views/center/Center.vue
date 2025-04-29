@@ -43,16 +43,10 @@
                             <el-input v-model="userForm.introduction" type="textarea" />
                         </el-form-item>
                         <el-form-item label="头像" prop="avatar">
-                            <el-upload
-                                class="avatar-uploader"
-                                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-                                :show-file-list="false"
-                                :on-change="handleAvatarChange"
-                                :auto-upload="false"
-                            >
-                                <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar" />
-                                <el-icon v-else class="avatar-uploader-icon"><i-ep-Plus /></el-icon>
-                            </el-upload>
+                            <Upload 
+                            :avatar="userForm.avatar" 
+                            @handleAvatarChange="handleAvatarChange"
+                            />
                         </el-form-item>
                         <el-form-item>
                             <el-button
@@ -69,13 +63,17 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
-import useUserInfoStore from "../../stores/useUserInfoStore";
-import axios from "axios";
+import useUserInfoStore from "@/stores/useUserInfoStore";
+import upload from '@/util/upload';
+import Upload from '@/components/upload/Upload.vue'
 const userInfoStore = useUserInfoStore();
-const avatarUrl = computed(()=>userInfoStore.userInfo.avatar? userInfoStore.userInfo.avatar:'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
+const avatarUrl = computed(()=>
+userInfoStore.userInfo.avatar? 
+userInfoStore.userInfo.avatar:
+'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
 const userFormRef = ref(null);
 const {username,gender,introduction,avatar} = userInfoStore.userInfo;
+
 const userForm = reactive({
     username,
     gender,
@@ -97,6 +95,10 @@ const userFormRules = reactive({
         { required: true, message: '请上传头像', trigger: 'blur' },
     ],
 })
+const handleAvatarChange= (file) => {
+  userForm.avatar = URL.createObjectURL(file)
+  userForm.file = file
+}
 const options = [
   {
     value: 0,
@@ -111,35 +113,18 @@ const options = [
     label: '女',
   },
 ]
-
-const handleAvatarChange= (uploadFile) => {
-  userForm.avatar = URL.createObjectURL(uploadFile.raw)
-  userForm.file = uploadFile.raw
-}
-
-const beforeAvatarUpload= (rawFile) => {
-  if (rawFile.type !== 'image/jpeg') {
-    ElMessage.error('Avatar picture must be JPG format!')
-    return false
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('Avatar picture size can not exceed 2MB!')
-    return false
-  }
-  return true
-}
 const submitForm = async()=>{
     userFormRef.value.validate(async(value)=>{
         if(value){
-            const params = new FormData();
-            for(let i in userForm){
-                params.append(i,userForm[i]);
+            try {
+                const res =await upload('/adminapi/user/upload',userForm);
+                if(res.data.ActionType==='ok'){
+                    userInfoStore.changeUserInfo(res.data.data);
+                    ElMessage.success("更新成功");
+                }
+            } catch (error) {
+                ElMessage.error(error.message);
             }
-            console.log(params)
-            const res =await axios.post('/adminapi/user/upload',params,{
-                    headers:{
-                        "Content-Type":"multipart/form-data"
-                    }
-                });
         }
     })
 }
@@ -151,34 +136,5 @@ const submitForm = async()=>{
     .el-card{
         text-align: center;
     }
-}
-.avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-
-</style>
-
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
 }
 </style>
